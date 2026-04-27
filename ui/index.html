@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kitsune Launcher</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="card">
+        <h1>Kitsune Launch</h1>
+        <p class="subtitle">First vertical slice: build launch plan from backend.</p>
+        <form id="launch-form" class="form">
+          <label>
+            Username
+            <input id="username" value="KitsuneFox" minlength="3" maxlength="16" required />
+          </label>
+          <label>
+            Version
+            <select id="version" required>
+              <option value="">Loading versions...</option>
+            </select>
+          </label>
+          <label>
+            RAM (GB)
+            <input id="ram" type="number" value="4" min="2" max="32" required />
+          </label>
+          <button type="submit">Build Launch Plan</button>
+        </form>
+        <div id="version-actions" style="display: none; margin-top: 12px; gap: 8px; display: grid; grid-template-columns: 1fr 1fr;">
+          <button id="download-version-btn" type="button">
+            ⬇ Download Version
+          </button>
+          <button id="launch-start-btn" type="button" style="background: linear-gradient(140deg, #10b981, #14d4b4); color: #001f1a;">
+            ▶ Start Minecraft
+          </button>
+        </div>
+      </section>
+      <section class="card">
+        <h2>Status</h2>
+        <pre id="output">Initializing...</pre>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

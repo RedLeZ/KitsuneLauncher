@@ -1,0 +1,136 @@
+:root {
+  --bg-0: #241106;
+  --bg-1: #4a1f08;
+  --surface: rgba(36, 18, 10, 0.84);
+  --line: rgba(255, 171, 72, 0.35);
+  --text: #ffe5be;
+  --muted: #f2c17b;
+  --accent: #ff8a1f;
+  --accent-2: #ffb347;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 156, 45, 0.25), transparent 40%),
+    radial-gradient(circle at 88% 8%, rgba(255, 82, 16, 0.22), transparent 40%),
+    linear-gradient(160deg, var(--bg-0), var(--bg-1));
+}
+
+.layout {
+  width: min(1050px, 92vw);
+  margin: 4rem auto;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  animation: fade-up 420ms ease-out;
+}
+
+.card {
+  padding: 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+h1,
+h2 {
+  margin-top: 0;
+}
+
+.subtitle {
+  color: var(--muted);
+}
+
+.form {
+  display: grid;
+  gap: 0.8rem;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+input,
+button,
+select {
+button {
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 0.72rem 0.8rem;
+  font-size: 1rem;
+}
+
+input {
+  select {
+  background: rgba(15, 9, 7, 0.8);
+  color: var(--text);
+}
+
+select option {
+  background: var(--bg-0);
+  color: var(--text);
+}
+button {
+  cursor: pointer;
+  color: #291200;
+  font-weight: 700;
+  background: linear-gradient(140deg, var(--accent), var(--accent-2));
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#launch-start-btn {
+  width: 100%;
+  background: linear-gradient(140deg, #10b981, #14d4b4);
+  color: #001f1a;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+#launch-start-btn:hover {
+  filter: brightness(1.12);
+}
+
+pre {
+  margin: 0;
+  max-height: 340px;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.7rem;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+}
+}

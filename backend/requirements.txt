@@ -1,0 +1,5 @@
+fastapi==0.115.12
+uvicorn==0.34.1
+pydantic==2.11.3
+numba==0.61.2
+minecraft-launcher-lib==7.1
