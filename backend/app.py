@@ -13,7 +13,16 @@ app = FastAPI(title="Kitsune Launcher Backend", version="0.1.0")
 # CORS configuration for dev and Tauri
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:8765"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:8765",
+        "http://127.0.0.1:8765",
+        "tauri://localhost",
+        "http://tauri.localhost",
+        "https://tauri.localhost",
+        "app://localhost",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -133,3 +142,8 @@ def download_version(payload: DownloadVersionPayload) -> dict:
     path = payload.minecraft_path or default_minecraft_path()
     result = runtime.download_version(payload.version, path)
     return result
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="127.0.0.1", port=8765)

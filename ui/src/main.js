@@ -6,9 +6,67 @@ const versionSelect = document.getElementById("version");
 const versionActionsDiv = document.getElementById("version-actions");
 const downloadBtn = document.getElementById("download-version-btn");
 const startBtn = document.getElementById("launch-start-btn");
+const launcherRoot = document.getElementById("launcher-root");
+const loadingScreen = document.getElementById("startup-loading");
+const loadingStatus = document.getElementById("startup-loading-status");
+const retryBtn = document.getElementById("startup-retry");
 
 let currentPlan = null;
 let installedVersions = new Set();
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function waitForBackendReady(timeoutMs = 30000, intervalMs = 600) {
+  const deadline = Date.now() + timeoutMs;
+  let attempts = 0;
+
+  while (Date.now() < deadline) {
+    attempts += 1;
+    loadingStatus.textContent = `Waiting for backend on ${backendBase} (attempt ${attempts})`;
+    try {
+      const res = await fetch(`${backendBase}/health`, { cache: "no-store" });
+      if (res.ok) {
+        return;
+      }
+    } catch {
+      // Keep polling until timeout.
+    }
+    await sleep(intervalMs);
+  }
+
+  throw new Error("Backend startup timeout");
+}
+
+function showLauncher() {
+  loadingScreen.style.display = "none";
+  launcherRoot.classList.remove("hidden");
+}
+
+function showLoadingError(error) {
+  loadingStatus.textContent = "Backend is taking longer than expected.";
+  retryBtn.hidden = false;
+  output.textContent = JSON.stringify(
+    {
+      error: "Failed to reach backend during startup",
+      detail: String(error),
+      hint: `Make sure backend is running on ${backendBase}`,
+    },
+    null,
+    2
+  );
+}
+
+async function startLauncher() {
+  retryBtn.hidden = true;
+  loadingStatus.textContent = `Waiting for backend on ${backendBase}`;
+  try {
+    await waitForBackendReady();
+    showLauncher();
+    await initializeVersions();
+  } catch (error) {
+    showLoadingError(error);
+  }
+}
 
 // Load versions on page load
 async function initializeVersions() {
@@ -53,13 +111,17 @@ async function initializeVersions() {
     output.textContent = JSON.stringify({
       error: "Failed to initialize versions",
       detail: String(error),
-      hint: "Make sure backend is running on http://127.0.0.1:8765",
+      hint: `Make sure backend is running on ${backendBase}`,
     }, null, 2);
   }
 }
 
-// Load versions on page load
-initializeVersions();
+retryBtn?.addEventListener("click", () => {
+  startLauncher();
+});
+
+// Start launcher only after backend is responsive.
+startLauncher();
 
 // Handle form submission
 form?.addEventListener("submit", async (event) => {
@@ -107,7 +169,7 @@ form?.addEventListener("submit", async (event) => {
   } catch (error) {
     output.textContent = JSON.stringify({
       error: String(error),
-      hint: "Make sure backend is running on http://127.0.0.1:8765",
+      hint: `Make sure backend is running on ${backendBase}`,
     }, null, 2);
   }
 });
@@ -197,7 +259,7 @@ startBtn?.addEventListener("click", async () => {
   } catch (error) {
     output.textContent = JSON.stringify({
       error: String(error),
-      hint: "Make sure backend is running on http://127.0.0.1:8765",
+      hint: `Make sure backend is running on ${backendBase}`,
     }, null, 2);
     startBtn.disabled = false;
   }

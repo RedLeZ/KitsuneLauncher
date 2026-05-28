@@ -6,6 +6,9 @@ __pycache__/
 .pytest_cache/
 .venv/
 
+build/
+dist/
+
 # Node
 node_modules/
 ui/node_modules/

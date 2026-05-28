@@ -7,7 +7,14 @@
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
-    <main class="layout">
+    <section id="startup-loading" class="startup-loading">
+      <img src="/loading.gif" alt="Loading" class="startup-loading-gif" />
+      <h2>Starting backend...</h2>
+      <p id="startup-loading-status">Waiting for backend on http://127.0.0.1:8765</p>
+      <button id="startup-retry" type="button" hidden>Retry</button>
+    </section>
+
+    <main id="launcher-root" class="layout hidden">
       <section class="card">
         <h1>Kitsune Launch</h1>
         <p class="subtitle">First vertical slice: build launch plan from backend.</p>
